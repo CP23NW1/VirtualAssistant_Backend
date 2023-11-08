@@ -56,7 +56,7 @@ def generate_message(prompt):
         result = speech_synthesizer.speak_ssml(ssml)
         if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
             print("Text-to-speech conversion successful.")
-            return True
+            return text
         else:
             print(f"Error synthesizing audio: {result}")
             return False
