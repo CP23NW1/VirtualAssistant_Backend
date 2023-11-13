@@ -9,7 +9,7 @@ services:
     networks:
       - my_network
     volumes:
-      - ./app:/app
+      - .:/app
 
   frontend_web:
     build:
