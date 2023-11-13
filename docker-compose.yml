@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   backend_api:
     build:
@@ -6,10 +6,25 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+    networks:
+      - my_network
+    volumes:
+      - ./app:/app
+
   frontend_web:
     build:
       context: ../VirtualAssistant_Frontend
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-
+    networks:
+      - my_network
+    volumes:
+      - ../VirtualAssistant_Frontend/src:/src
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - backend_api
+      
+networks:
+  my_network:
+    driver: bridge

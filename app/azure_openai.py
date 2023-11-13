@@ -19,21 +19,20 @@ speech_config.speech_synthesis_language = os.getenv("SPEECH_SYNTHESIS_LANGUAGE")
 # Set up the voice configuration
 speech_config.speech_synthesis_voice_name = os.getenv("SPEECH_SYNTHESIS_VOICE_NAME")
 
+from pathlib import Path
+
+file_system = Path("./app/content_system.txt")
+system_content = file_system.read_text(encoding="utf-8")
+file_assistant = Path("./app/content_assistant.txt")
+assistant_content = file_system.read_text(encoding="utf-8")
+
 
 def generate_message(prompt):
     response = openai.ChatCompletion.create(
         engine=os.getenv("ENGINE"),
         messages=[
-            {
-                "role": "system",
-                "content": "คุณคือผู้มีข้อมูลและความเข้าใจเกี่ยวกับหนังสือ คุณสื่อสารด้วยภาษาไทยอย่างเดียว ยกเว้นชื่อหนังสือกับผู้แต่ง และต้องอธิบายเป็นภาษาพูด"
-                + "คุณชื่อ นริศ คุณเป็นผู้หญิง"
-                + "ต้องผู้ใช้งานหรือuserเปลี่ยนจาก คุณ เป็น ‘นายท่าน’ หรือ ‘คุณหนู’",
-            },
-            {
-                "role": "assistant",
-                "content": "คุณคือคนแนะนำหนังสือ คุณต้องบอกรายละเอีิยดหนังสือที่แนะนำด้วย",
-            },
+            {"role": "system", "content": str(system_content)},
+            {"role": "assistant", "content": str()},
             {"role": "user", "content": prompt},
         ],
         temperature=0.7,
