@@ -25,7 +25,6 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 COPY . .
-COPY .env .env
 
 RUN pip install uvicorn
 RUN pip install --upgrade azure-cognitiveservices-speech
