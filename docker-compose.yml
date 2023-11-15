@@ -11,7 +11,7 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - databasemongodb_container
+      - mongodb_container
 
   frontend_web:
     build:
