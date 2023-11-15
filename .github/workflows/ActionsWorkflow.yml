@@ -21,6 +21,6 @@ jobs:
           run:  cd /home/narisara/project/VirtualAssistant_Backend && git checkout . && git pull https://$USER_GITHUB:$PASSWORD_GITHUB@github.com/CP23NW1/VirtualAssistant_Backend
 
         - name: Docker-compose up 
-          run:  cd /home/narisara/project/VirtualAssistant_Backend && docker-compose up 
+          run:  cd /home/narisara/project/VirtualAssistant_Backend && docker-compose up -d
 
     
