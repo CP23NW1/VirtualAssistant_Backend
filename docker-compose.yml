@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "7000:7000"
     networks:
       - my_network
     volumes:
@@ -16,7 +16,7 @@ services:
       context: ../VirtualAssistant_Frontend
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "3000:3000"
     networks:
       - my_network
     volumes:
@@ -24,6 +24,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - backend_api
+
       
 networks:
   my_network:

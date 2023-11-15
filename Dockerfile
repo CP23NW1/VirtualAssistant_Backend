@@ -29,6 +29,8 @@ COPY . .
 RUN pip install uvicorn
 RUN pip install --upgrade azure-cognitiveservices-speech
 
-CMD ["uvicorn", "app.main:app", "--reload" ,  "--host=0.0.0.0", "--port=8000"]
+EXPOSE 7000
+
+CMD ["uvicorn", "app.main:app", "--reload" ,  "--host=0.0.0.0", "--port=7000"]
 
 
