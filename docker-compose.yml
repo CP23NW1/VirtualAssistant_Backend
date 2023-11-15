@@ -11,7 +11,7 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - database
+      - databasemongodb_container
 
   frontend_web:
     build:
@@ -26,7 +26,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - backend_api
-      - database
+      - mongodb_container
 
   mongodb_container:
     image: mongo:latest
