@@ -10,8 +10,6 @@ services:
       - my_network
     volumes:
       - .:/app
-    depends_on:
-      - mongodb_container
 
   frontend_web:
     build:
@@ -26,7 +24,6 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - backend_api
-      - mongodb_container
 
   mongodb_container:
     image: mongo:latest
