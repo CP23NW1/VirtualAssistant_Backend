@@ -10,6 +10,8 @@ services:
       - my_network
     volumes:
       - .:/app
+    depends_on:
+      - database
 
   frontend_web:
     build:
@@ -24,8 +26,23 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - backend_api
+      - database
 
-      
+  mongodb_container:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+      MONGO_INITDB_USER_USERNAME: NongSnail
+      MONGO_INITDB_USER_PASSWORD: 123456
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
+
+volumes:
+  mongodb_data_container:
+       
 networks:
   my_network:
     driver: bridge
