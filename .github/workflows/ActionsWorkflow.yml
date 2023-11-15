@@ -15,12 +15,12 @@ jobs:
         steps:
         - name: Stop all docker-compose
           run:  cd /home/narisara/project/VirtualAssistant_Backend &&
-                 sudo docker compose stop && sudo docker compose rm -f 
+                 docker compose stop && docker compose rm -f 
                 
         - name: Git pull
           run:  cd /home/narisara/project/VirtualAssistant_Backend && git checkout . && git pull https://$USER_GITHUB:$PASSWORD_GITHUB@github.com/CP23NW1/VirtualAssistant_Backend
 
         - name: Docker-compose up 
-          run:  cd /home/narisara/project/VirtualAssistant_Backend && sudo docker-compose up 
+          run:  cd /home/narisara/project/VirtualAssistant_Backend && docker-compose up 
 
     
