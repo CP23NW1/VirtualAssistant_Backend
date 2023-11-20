@@ -21,9 +21,9 @@ speech_config.speech_synthesis_voice_name = os.getenv("SPEECH_SYNTHESIS_VOICE_NA
 
 from pathlib import Path
 
-file_system = Path("./app/content_system.txt")
+file_system = Path("./app/content/content_system.txt")
 system_content = file_system.read_text(encoding="utf-8")
-file_assistant = Path("./app/content_assistant.txt")
+file_assistant = Path("./app/content/content_assistant.txt")
 assistant_content = file_system.read_text(encoding="utf-8")
 
 
