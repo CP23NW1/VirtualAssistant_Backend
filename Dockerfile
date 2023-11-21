@@ -28,6 +28,8 @@ COPY . .
 
 RUN pip install uvicorn
 RUN pip install --upgrade azure-cognitiveservices-speech
+RUN pip install pydantic[email]
+RUN pip install fastapi-jwt-auth[asymmetric]
 
 EXPOSE 7000
 

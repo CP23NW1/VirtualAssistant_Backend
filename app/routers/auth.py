@@ -66,7 +66,9 @@ def login(
 
     # Create access token
     access_token = Authorize.create_access_token(
-        subject=str(user["id"]), expires_time=timedelta(minutes=ACCESS_TOKEN_EXPIRES_IN)
+        subject=str(user["id"]),
+        expires_time=timedelta(minutes=ACCESS_TOKEN_EXPIRES_IN),
+        user_claims={"username": user["name"]},
     )
 
     # Create refresh token

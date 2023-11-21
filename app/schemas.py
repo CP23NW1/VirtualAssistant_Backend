@@ -1,12 +1,13 @@
 from datetime import datetime
 from pydantic import BaseModel, EmailStr, constr
+from typing import Union
 
 
 class UserBaseSchema(BaseModel):
     name: str
     email: str
-    created_at: datetime | None = None
-    updated_at: datetime | None = None
+    created_at: Union[datetime, None] = None
+    updated_at: Union[datetime, None] = None
 
     class Config:
         orm_mode = True

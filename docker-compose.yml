@@ -12,20 +12,20 @@ services:
     volumes:
       - .:/app
 
-  frontend_web:
-    container_name: frontend_web
-    build:
-      context: ../VirtualAssistant_Frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    networks:
-      - my_network
-    volumes:
-      - ../VirtualAssistant_Frontend/src:/src
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-    depends_on:
-      - backend_api
+  # frontend_web:
+  #   container_name: frontend_web
+  #   build:
+  #     context: ../VirtualAssistant_Frontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #     - my_network
+  #   volumes:
+  #     - ../VirtualAssistant_Frontend/src:/src
+  #     - /var/run/docker.sock:/tmp/docker.sock:ro
+  #   depends_on:
+  #     - backend_api
 
   mongodb:
     image: mongo:latest
@@ -40,22 +40,29 @@ services:
       MONGO_INITDB_USER_PASSWORD: ${MONGO_INITDB_USER_PASSWORD}
     ports:
       - '6000:27017'
+    networks:
+      - my_network
     volumes:
       - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
+      - ./data:/data/db
 
-  mongo-express:
-    image: mongo-express:latest
-    container_name: mongo-express
-    ports:
-      - 8081:8081
-    env_file:
-      - ./.env
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_INITDB_USER_USERNAME}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_USER_PASSWORD}
-      ME_CONFIG_MONGODB_SERVER: mongodb 
+
+  # mongo-express:
+  #   image: mongo-express:latest
+  #   container_name: mongo-express
+  #   ports:
+  #     - 8081:8081
+  #   env_file:
+  #     - ./.env
+  #   environment:
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_INITDB_USER_USERNAME}
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_USER_PASSWORD}
+  #     ME_CONFIG_MONGODB_SERVER: mongodb 
        
+volumes:
+  mongo:
   
 networks:
   my_network:
     driver: bridge
+
