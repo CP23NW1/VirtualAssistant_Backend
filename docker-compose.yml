@@ -12,20 +12,20 @@ services:
     volumes:
       - .:/app
 
-  # frontend_web:
-  #   container_name: frontend_web
-  #   build:
-  #     context: ../VirtualAssistant_Frontend
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "3000:3000"
-  #   networks:
-  #     - my_network
-  #   volumes:
-  #     - ../VirtualAssistant_Frontend/src:/src
-  #     - /var/run/docker.sock:/tmp/docker.sock:ro
-  #   depends_on:
-  #     - backend_api
+  frontend_web:
+    container_name: frontend_web
+    build:
+      context: ../VirtualAssistant_Frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - my_network
+    volumes:
+      - ../VirtualAssistant_Frontend/src:/src
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - backend_api
 
   mongodb:
     image: mongo:latest

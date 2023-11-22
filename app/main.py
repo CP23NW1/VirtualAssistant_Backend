@@ -1,16 +1,17 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException, status
 from app.azure_openai import generate_message
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from app.model.user import UserMessage
 from app.routers import auth, user
-
+from app.database import User_Message, User
+from fastapi.security import OAuth2PasswordBearer
+from bson import ObjectId
+from fastapi_jwt_auth.exceptions import AuthJWTException
+from fastapi_jwt_auth import AuthJWT
 
 app = FastAPI()
-
-# origins = [
-#     "http://localhost:3000",
-# ]
+authjwt = AuthJWT(app)
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,6 +20,19 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+
+def get_current_user(token: str = Depends(oauth2_scheme)):
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token is missing",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return token
+
 
 app.include_router(auth.router, tags=["Auth"], prefix="/api/auth")
 app.include_router(user.router, tags=["Users"], prefix="/api/users")
@@ -30,9 +44,50 @@ def root():
 
 
 @app.post("/api/user_message")
-async def root(message: UserMessage):
-    text = generate_message(str(message))
-    return {"content": text}
+async def root(UserMessage: UserMessage, token: str = Depends(get_current_user)):
+    try:
+        authjwt.get_jwt_subject(token)
+    except AuthJWTException:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    conversation_history = []
+    if str(UserMessage.message) == "":
+        raise HTTPException(status_code=400, detail="message is required")
+    if UserMessage.id_user == None:
+        raise HTTPException(status_code=400, detail="id_user is required")
+    if UserMessage.role != "user":
+        raise HTTPException(status_code=400, detail="user role only")
+
+    check_user = User.find_one({"_id": ObjectId(UserMessage.id_user)})
+
+    if not check_user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    text = generate_message(str(UserMessage.message))
+    conversation_history.append({"role": "user", "content": UserMessage.message})
+    conversation_history.append({"role": "assistant", "content": text})
+
+    check_user_id_in_user_message = User_Message.find_one(
+        {"_id": ObjectId(UserMessage.id_user)}
+    )
+    if not check_user_id_in_user_message:
+        User_Message.insert_one(
+            {
+                "_id": ObjectId(UserMessage.id_user),
+                "history_message": conversation_history,
+            }
+        )
+    else:
+        User_Message.update_one(
+            {"_id": ObjectId(UserMessage.id_user)},
+            {"$push": {"history_message": {"$each": conversation_history}}},
+            upsert=True,
+        )
+    return {"role": "assistant", "content": text}
 
 
 if __name__ == "__main__":

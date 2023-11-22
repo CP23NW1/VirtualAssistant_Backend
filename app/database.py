@@ -15,4 +15,6 @@ except Exception as e:
 
 db = client[settings.MONGO_INITDB_DATABASE]
 User = db.users
+User_Message = db.user_message
 User.create_index([("email", pymongo.ASCENDING)], unique=True)
+User_Message.create_index(["user_message"])
