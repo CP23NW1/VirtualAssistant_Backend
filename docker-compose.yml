@@ -43,9 +43,6 @@ services:
       - my_network
     volumes:
       - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
-      - ./data:/data/db
-
-
 volumes:
   mongo:
   
