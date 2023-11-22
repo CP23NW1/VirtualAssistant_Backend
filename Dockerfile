@@ -2,7 +2,6 @@ FROM python:3.10.10-slim
 
 WORKDIR /app
 
-RUN apt-get install -y python3-pip
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
