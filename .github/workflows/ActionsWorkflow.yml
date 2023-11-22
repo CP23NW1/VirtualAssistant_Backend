@@ -24,7 +24,7 @@ jobs:
         run: cd /home/narisara/project/VirtualAssistant_Frontend && git checkout . && git pull https://$USER_GITHUB:$PASSWORD_GITHUB@github.com/CP23NW1/VirtualAssistant_Frontend
 
       - name: Create env file
-        run: cd /home/narisara/project/VirtualAssistant_Backend && touch .env
+        run: cd /home/narisara/project/VirtualAssistant_Backend && touch .env &&
           echo API_BASE= ${{secrets.API_BASE}} >> .env
           echo API_VERSION= ${{secrets.API_VERSION}} >> .env
           echo API_KEY= ${{secrets.API_KEY}} >> .env
