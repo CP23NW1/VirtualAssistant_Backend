@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from bson.objectid import ObjectId
 from fastapi import APIRouter, Response, status, Depends, HTTPException
-
+import jwt
 from app import oauth2
 from app.database import User
 from app.serializers.userSerializers import userEntity, userResponseEntity

@@ -7,11 +7,12 @@ from app.routers import auth, user
 from app.database import User_Message, User
 from fastapi.security import OAuth2PasswordBearer
 from bson import ObjectId
-from fastapi_jwt_auth.exceptions import AuthJWTException
-from fastapi_jwt_auth import AuthJWT
+import jwt
+from .config import settings
+import base64
+
 
 app = FastAPI()
-authjwt = AuthJWT(app)
 
 app.add_middleware(
     CORSMiddleware,
@@ -31,6 +32,21 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
             detail="Token is missing",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
+    try:
+        token = jwt.decode(
+            jwt=token,
+            key=base64.b64decode(settings.JWT_PUBLIC_KEY).decode("utf-8"),
+            algorithms=settings.JWT_ALGORITHM,
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(e),
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    # You might want to use the 'subject' in further processing
     return token
 
 
@@ -45,24 +61,14 @@ def root():
 
 @app.post("/api/user_message")
 async def root(UserMessage: UserMessage, token: str = Depends(get_current_user)):
-    try:
-        authjwt.get_jwt_subject(token)
-    except AuthJWTException:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-
     conversation_history = []
+    user_id = str(token["sub"])
     if str(UserMessage.message) == "":
         raise HTTPException(status_code=400, detail="message is required")
-    if UserMessage.id_user == None:
-        raise HTTPException(status_code=400, detail="id_user is required")
     if UserMessage.role != "user":
         raise HTTPException(status_code=400, detail="user role only")
 
-    check_user = User.find_one({"_id": ObjectId(UserMessage.id_user)})
+    check_user = User.find_one({"_id": ObjectId(user_id)})
 
     if not check_user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -71,23 +77,27 @@ async def root(UserMessage: UserMessage, token: str = Depends(get_current_user))
     conversation_history.append({"role": "user", "content": UserMessage.message})
     conversation_history.append({"role": "assistant", "content": text})
 
-    check_user_id_in_user_message = User_Message.find_one(
-        {"_id": ObjectId(UserMessage.id_user)}
-    )
+    check_user_id_in_user_message = User_Message.find_one({"_id": ObjectId(user_id)})
     if not check_user_id_in_user_message:
         User_Message.insert_one(
             {
-                "_id": ObjectId(UserMessage.id_user),
+                "_id": ObjectId(user_id),
                 "history_message": conversation_history,
             }
         )
     else:
         User_Message.update_one(
-            {"_id": ObjectId(UserMessage.id_user)},
+            {"_id": ObjectId(user_id)},
             {"$push": {"history_message": {"$each": conversation_history}}},
             upsert=True,
         )
     return {"role": "assistant", "content": text}
+
+
+@app.get("/api/history_message")
+async def root(token: str = Depends(get_current_user)):
+    data = list(User_Message.find({"_id": ObjectId(str(token["sub"]))}))
+    return data
 
 
 if __name__ == "__main__":
