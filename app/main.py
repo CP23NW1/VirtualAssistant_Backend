@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from app.azure_openai import generate_message
-from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from app.model.user import UserMessage
 from app.routers import auth, user
@@ -40,13 +39,13 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
             algorithms=settings.JWT_ALGORITHM,
         )
     except Exception as e:
+        print(e)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=str(e),
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    # You might want to use the 'subject' in further processing
     return token
 
 
@@ -63,7 +62,7 @@ def root():
 async def root(UserMessage: UserMessage, token: str = Depends(get_current_user)):
     conversation_history = []
     user_id = str(token["sub"])
-    if str(UserMessage.message) == "":
+    if str(UserMessage.content) == "":
         raise HTTPException(status_code=400, detail="message is required")
     if UserMessage.role != "user":
         raise HTTPException(status_code=400, detail="user role only")
@@ -73,8 +72,8 @@ async def root(UserMessage: UserMessage, token: str = Depends(get_current_user))
     if not check_user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    text = generate_message(str(UserMessage.message))
-    conversation_history.append({"role": "user", "content": UserMessage.message})
+    text = generate_message(str(UserMessage.content))
+    conversation_history.append({"role": "user", "content": UserMessage.content})
     conversation_history.append({"role": "assistant", "content": text})
 
     check_user_id_in_user_message = User_Message.find_one({"_id": ObjectId(user_id)})
@@ -95,9 +94,17 @@ async def root(UserMessage: UserMessage, token: str = Depends(get_current_user))
 
 
 @app.get("/api/history_message")
-async def root(token: str = Depends(get_current_user)):
-    data = list(User_Message.find({"_id": ObjectId(str(token["sub"]))}))
-    return data
+def root(token: str = Depends(get_current_user)):
+    user_message = User_Message.find_one({"_id": ObjectId(str(token["sub"]))})
+    if user_message != None:
+        data = {"history_message": user_message.get("history_message", [])}
+        return data
+    return {"history_message": []}
+
+
+@app.delete("/api/delete_message")
+def root(token: str = Depends(get_current_user)):
+    User_Message.delete_one({"_id": ObjectId(str(token["sub"]))})
 
 
 if __name__ == "__main__":
