@@ -24,9 +24,7 @@ services:
     volumes:
       - ../VirtualAssistant_Frontend/src:/src
       - /var/run/docker.sock:/tmp/docker.sock:ro
-    depends_on:
-      - backend_api
-      - database
+
 
   mongodb:
     image: mongo:latest
