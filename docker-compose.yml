@@ -11,7 +11,6 @@ services:
       - my_network
     volumes:
       - .:/app
-    depends_on:
       - mongodb
 
   frontend_web:
@@ -26,9 +25,6 @@ services:
     volumes:
       - ../VirtualAssistant_Frontend/src:/src
       - /var/run/docker.sock:/tmp/docker.sock:ro
-    depends_on:
-      - backend_api
-      - mongodb
 
   mongodb:
     image: mongo:latest
@@ -49,10 +45,14 @@ services:
       - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
       - ./data:/data/db
 
+
 volumes:
   mongo:
   
 networks:
   my_network:
     driver: bridge
+
+
+  
 

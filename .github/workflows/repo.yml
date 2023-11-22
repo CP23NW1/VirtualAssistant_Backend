@@ -20,5 +20,15 @@ jobs:
       - name: Git pull
         run: cd /home/narisara/project/VirtualAssistant_Backend && git checkout . && git pull https://$USER_GITHUB:$PASSWORD_GITHUB@github.com/CP23NW1/VirtualAssistant_Backend
 
-      - name: Docker-compose up
-        run: cd /home/narisara/project/VirtualAssistant_Backend && docker-compose up --build -d
+      - name: Docker-compose up mongodb
+        run: cd /home/narisara/project/VirtualAssistant_Backend && docker-compose up --build -d mongodb
+
+      - name: Sleep for 20 seconds
+        run: sleep 30s
+        shell: bash
+
+      - name: Docker-compose up backend_api
+        run: cd /home/narisara/project/VirtualAssistant_Backend && docker-compose up --build -d backend_api
+
+      - name: Docker-compose up frontend_web
+        run: cd /home/narisara/project/VirtualAssistant_Backend && docker-compose up --build -d frontend_web
