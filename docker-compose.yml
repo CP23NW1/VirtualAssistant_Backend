@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   backend_api:
+    container_name: backend_api
     build:
       context: .
       dockerfile: Dockerfile
@@ -12,6 +13,7 @@ services:
       - .:/app
 
   frontend_web:
+    container_name: frontend_web
     build:
       context: ../VirtualAssistant_Frontend
       dockerfile: Dockerfile
@@ -24,22 +26,35 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - backend_api
+      - database
 
-  mongodb_container:
+  mongodb:
     image: mongo:latest
+    container_name: mongodb
+    env_file:
+      - ./.env
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: 123456
-      MONGO_INITDB_USER_USERNAME: NongSnail
-      MONGO_INITDB_USER_PASSWORD: 123456
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      MONGO_INITDB_USER_USERNAME: ${MONGO_INITDB_USER_USERNAME}
+      MONGO_INITDB_USER_PASSWORD: ${MONGO_INITDB_USER_PASSWORD}
     ports:
-      - 27017:27017
+      - '6000:27017'
+    networks:
+      - my_network
     volumes:
-      - mongodb_data_container:/data/db
+      - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
+      - ./data:/data/db
+
 
 volumes:
-  mongodb_data_container:
-       
+  mongo:
+  
 networks:
   my_network:
     driver: bridge
+
+
+  
+

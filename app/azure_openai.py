@@ -21,9 +21,9 @@ speech_config.speech_synthesis_voice_name = os.getenv("SPEECH_SYNTHESIS_VOICE_NA
 
 from pathlib import Path
 
-file_system = Path("./app/content_system.txt")
+file_system = Path("./app/content/content_system.txt")
 system_content = file_system.read_text(encoding="utf-8")
-file_assistant = Path("./app/content_assistant.txt")
+file_assistant = Path("./app/content/content_assistant.txt")
 assistant_content = file_system.read_text(encoding="utf-8")
 
 
@@ -42,23 +42,4 @@ def generate_message(prompt):
         presence_penalty=0,
         stop=None,
     )
-    # return response["choices"][0]["message"]["content"]
-
-    # Create SSML with prosody rate adjustment
-    text = response["choices"][0]["message"]["content"]
-    ssml = f'<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="th-TH"><voice name="th-TH-PremwadeeNeural"><prosody rate="-20.00%" volume="-50.00%" pitch="+40.00%">{text}</prosody></voice></speak>'
-
-    # Create a speech synthesizer
-    speech_synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config)
-
-    try:
-        result = speech_synthesizer.speak_ssml(ssml)
-        if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
-            print("Text-to-speech conversion successful.")
-            return text
-        else:
-            print(f"Error synthesizing audio: {result}")
-            return False
-    except Exception as ex:
-        print(f"Error synthesizing audio: {ex}")
-        return False
+    return response["choices"][0]["message"]["content"]
