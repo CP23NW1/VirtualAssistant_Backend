@@ -7,7 +7,7 @@ on:
 env:
   USER_GITHUB: ${{secrets.USER_GITHUB}}
   PASSWORD_GITHUB: ${{secrets.PASSWORD_GITHUB}}
- 
+
 jobs:
   deploy-docker-to-server:
     runs-on:
@@ -20,7 +20,7 @@ jobs:
       - name: Git pull
         run: cd /home/narisara/project/VirtualAssistant_Backend && git checkout . && git pull https://$USER_GITHUB:$PASSWORD_GITHUB@github.com/CP23NW1/VirtualAssistant_Backend
 
-       - name: Create env file
+      - name: Create env file
         run: cd /home/narisara/project/VirtualAssistant_Backend && touch .env
           echo API_BASE= ${{secrets.API_BASE}} >> .env
           echo API_VERSION= ${{secrets.API_VERSION}} >> .env
