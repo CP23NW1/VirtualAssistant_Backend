@@ -3,7 +3,7 @@ import pymongo
 from app.config import settings
 
 client = MongoClient(
-    "mongodb://root:123456789@mongodb/VirtualAssistant?authSource=admin",
+    settings.DATABASE_URL,
     serverSelectionTimeoutMS=3000,
 )
 
