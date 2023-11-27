@@ -11,13 +11,6 @@ openai.api_base = os.getenv("API_BASE")
 openai.api_version = os.getenv("API_VERSION")
 openai.api_key = os.getenv("API_KEY")
 
-# Set up Azure Speech-to-Text and Text-to-Speech credentials
-speech_key = os.getenv("SPEECH_KEY")
-service_region = os.getenv("SERVICE_REGION")
-speech_config = speechsdk.SpeechConfig(subscription=speech_key, region=service_region)
-speech_config.speech_synthesis_language = os.getenv("SPEECH_SYNTHESIS_LANGUAGE")
-# Set up the voice configuration
-speech_config.speech_synthesis_voice_name = os.getenv("SPEECH_SYNTHESIS_VOICE_NAME")
 
 from pathlib import Path
 
