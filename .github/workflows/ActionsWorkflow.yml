@@ -40,7 +40,8 @@ jobs:
           echo "JWT_ALGORITHM=${{secrets.JWT_ALGORITHM}}" >> .env &&
           echo "CLIENT_ORIGIN=${{secrets.CLIENT_ORIGIN}}" >> .env &&
           echo "JWT_PRIVATE_KEY=${{secrets.JWT_PRIVATE_KEY}}" >> .env &&
-          echo "JWT_PUBLIC_KEY=${{secrets.JWT_PUBLIC_KEY}}" >> .env
+          echo "JWT_PUBLIC_KEY=${{secrets.JWT_PUBLIC_KEY}}" >> .env &&
+          cat /home/narisara/project/VirtualAssistant_Backend/.env
         env:
           API_BASE: ${{secrets.API_BASE}}
           API_VERSION: ${{secrets.API_VERSION}}
