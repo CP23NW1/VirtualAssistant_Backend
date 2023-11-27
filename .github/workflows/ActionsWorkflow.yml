@@ -25,22 +25,22 @@ jobs:
 
       - name: Create env file
         run: cd /home/narisara/project/VirtualAssistant_Backend && touch .env &&
-          echo API_BASE=${{secrets.API_BASE}} >> .env
-          echo API_VERSION=${{secrets.API_VERSION}} >> .env
-          echo API_KEY=${{secrets.API_KEY}} >> .env
-          echo ENGINE=${{secrets.ENGINE}} >> .env
-          echo MONGO_INITDB_ROOT_USERNAME=${{secrets.MONGO_INITDB_ROOT_USERNAME}} >> .env
-          echo MONGO_INITDB_ROOT_PASSWORD=${{secrets.MONGO_INITDB_ROOT_PASSWORD}} >> .env
-          echo MONGO_INITDB_USER_USERNAME=${{secrets.MONGO_INITDB_USER_USERNAME}} >> .env
-          echo MONGO_INITDB_USER_PASSWORD=${{secrets.MONGO_INITDB_USER_PASSWORD}} >> .env
-          echo MONGO_INITDB_DATABASE=${{secrets.MONGO_INITDB_DATABASE}} >> .env
-          echo DATABASE_URL=${{secrets.DATABASE_URL}} >> .env
-          echo ACCESS_TOKEN_EXPIRES_IN=${{secrets.ACCESS_TOKEN_EXPIRES_IN}} >> .env
-          echo REFRESH_TOKEN_EXPIRES_IN=${{secrets.REFRESH_TOKEN_EXPIRES_IN}} >> .env
-          echo JWT_ALGORITHM=${{secrets.JWT_ALGORITHM}} >> .env
-          echo CLIENT_ORIGIN=${{secrets.CLIENT_ORIGIN}} >> .env
-          echo JWT_PRIVATE_KEY=${{secrets.JWT_PRIVATE_KEY}} >> .env
-          echo JWT_PUBLIC_KEY=${{secrets.JWT_PUBLIC_KEY}} >> .env
+          echo "API_BASE=${{secrets.API_BASE}}" >> .env &&
+          echo "API_VERSION=${{secrets.API_VERSION}}" >> .env &&
+          echo "API_KEY=${{secrets.API_KEY}}" >> .env &&
+          echo "ENGINE=${{secrets.ENGINE}}" >> .env &&
+          echo "MONGO_INITDB_ROOT_USERNAME=${{secrets.MONGO_INITDB_ROOT_USERNAME}}" >> .env &&
+          echo "MONGO_INITDB_ROOT_PASSWORD=${{secrets.MONGO_INITDB_ROOT_PASSWORD}}" >> .env &&
+          echo "MONGO_INITDB_USER_USERNAME=${{secrets.MONGO_INITDB_USER_USERNAME}}" >> .env &&
+          echo "MONGO_INITDB_USER_PASSWORD=${{secrets.MONGO_INITDB_USER_PASSWORD}}" >> .env &&
+          echo "MONGO_INITDB_DATABASE=${{secrets.MONGO_INITDB_DATABASE}}"  >> .env &&
+          echo "DATABASE_URL=${{secrets.DATABASE_URL}}" >> .env &&
+          echo "ACCESS_TOKEN_EXPIRES_IN=${{secrets.ACCESS_TOKEN_EXPIRES_IN}}" >> .env &&
+          echo "REFRESH_TOKEN_EXPIRES_IN=${{secrets.REFRESH_TOKEN_EXPIRES_IN}}" >> .env &&
+          echo "JWT_ALGORITHM=${{secrets.JWT_ALGORITHM}}" >> .env &&
+          echo "CLIENT_ORIGIN=${{secrets.CLIENT_ORIGIN}}" >> .env &&
+          echo "JWT_PRIVATE_KEY=${{secrets.JWT_PRIVATE_KEY}}" >> .env &&
+          echo "JWT_PUBLIC_KEY=${{secrets.JWT_PUBLIC_KEY}}" >> .env
         env:
           API_BASE: ${{secrets.API_BASE}}
           API_VERSION: ${{secrets.API_VERSION}}
