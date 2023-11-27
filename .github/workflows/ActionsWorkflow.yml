@@ -43,7 +43,7 @@ jobs:
           echo JWT_PUBLIC_KEY=${{secrets.JWT_PUBLIC_KEY}} >> .env
         env:
           API_BASE: ${{secrets.API_BASE}}
-          API_VERSION: ${{secrets.API_VERSION}
+          API_VERSION: ${{secrets.API_VERSION}}
           API_KEY: ${{secrets.API_KEY}}
           ENGINE: ${{secrets.ENGINE}}
           MONGO_INITDB_ROOT_USERNAME: ${{secrets.MONGO_INITDB_ROOT_USERNAME}}
