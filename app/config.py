@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     CLIENT_ORIGIN: str
 
     class Config:
-        env_file = "../.env"
+        env_file = "/home/narisara/project/VirtualAssistant_Backend/.env"
 
 
 settings = Settings()
