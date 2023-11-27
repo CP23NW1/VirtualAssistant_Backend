@@ -41,6 +41,23 @@ jobs:
           echo CLIENT_ORIGIN=${{secrets.CLIENT_ORIGIN}} >> .env
           echo JWT_PRIVATE_KEY=${{secrets.JWT_PRIVATE_KEY}} >> .env
           echo JWT_PUBLIC_KEY=${{secrets.JWT_PUBLIC_KEY}} >> .env
+        env:
+          API_BASE: ${{secrets.API_BASE}}
+          API_VERSION: ${{secrets.API_VERSION}
+          API_KEY: ${{secrets.API_KEY}}
+          ENGINE: ${{secrets.ENGINE}}
+          MONGO_INITDB_ROOT_USERNAME: ${{secrets.MONGO_INITDB_ROOT_USERNAME}}
+          MONGO_INITDB_ROOT_PASSWORD: ${{secrets.MONGO_INITDB_ROOT_PASSWORD}}
+          MONGO_INITDB_USER_USERNAME: ${{secrets.MONGO_INITDB_USER_USERNAME}}
+          MONGO_INITDB_USER_PASSWORD: ${{secrets.MONGO_INITDB_USER_PASSWORD}}
+          MONGO_INITDB_DATABASE: ${{secrets.MONGO_INITDB_DATABASE}}
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
+          ACCESS_TOKEN_EXPIRES_IN: ${{secrets.ACCESS_TOKEN_EXPIRES_IN}}
+          REFRESH_TOKEN_EXPIRES_IN: ${{secrets.REFRESH_TOKEN_EXPIRES_IN}}
+          JWT_ALGORITHM: ${{secrets.JWT_ALGORITHM}}
+          CLIENT_ORIGIN: ${{secrets.CLIENT_ORIGIN}}
+          JWT_PRIVATE_KEY: ${{secrets.JWT_PRIVATE_KEY}}
+          JWT_PUBLIC_KEY: ${{secrets.JWT_PUBLIC_KEY}}
 
       - name: Docker-compose up mongodb
         run: cd /home/narisara/project/VirtualAssistant_Backend && docker-compose up --build -d mongodb
