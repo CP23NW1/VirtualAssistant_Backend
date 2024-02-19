@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from app.azure_openai import generate_message
 from fastapi.middleware.cors import CORSMiddleware
 from app.model.user import UserMessage
-from app.routers import auth, user
+from app.routers import auth, user, forget_password
 from app.database import User_Message, User
 from fastapi.security import OAuth2PasswordBearer
 from bson import ObjectId
@@ -51,6 +51,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
 
 app.include_router(auth.router, tags=["Auth"], prefix="/api/auth")
 app.include_router(user.router, tags=["Users"], prefix="/api/users")
+app.include_router(forget_password.router, tags=["Forget_password"], prefix="/api")
 
 
 @app.get("/api/healthchecker")

@@ -15,7 +15,7 @@ services:
   frontend_web:
     container_name: frontend_web
     build:
-      context: ../VirtualAssistant_Frontend
+      context: ../VirtualAssistant_Frontend_v2
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
