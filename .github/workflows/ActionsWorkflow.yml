@@ -21,7 +21,7 @@ jobs:
         run: cd /home/narisara/project/VirtualAssistant_Backend && git checkout . && git pull https://$USER_GITHUB:$PASSWORD_GITHUB@github.com/CP23NW1/VirtualAssistant_Backend
 
       - name: Git pull frontend
-        run: cd /home/narisara/project/VirtualAssistant_Frontend && git checkout . && git pull https://$USER_GITHUB:$PASSWORD_GITHUB@github.com/CP23NW1/VirtualAssistant_Frontend
+        run: cd /home/narisara/project/VirtualAssistant_Frontend_v2 && git checkout . && git pull https://$USER_GITHUB:$PASSWORD_GITHUB@github.com/CP23NW1/VirtualAssistant_Frontend_v2
 
       - name: Docker-compose up mongodb
         run: cd /home/narisara/project/VirtualAssistant_Backend && docker-compose up --build -d mongodb
