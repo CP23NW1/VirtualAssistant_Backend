@@ -22,7 +22,9 @@ services:
     networks:
       - my_network
     volumes:
-      - ../VirtualAssistant_Frontend/src:/src
+      - ../VirtualAssistant_Frontend_v2/Samples:/Samples
+      - ../VirtualAssistant_Frontend_v2/Core:/Core
+      - ../VirtualAssistant_Frontend_v2/Framework:/Framework
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
 

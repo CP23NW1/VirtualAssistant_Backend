@@ -60,37 +60,37 @@ def root():
 
 
 @app.post("/api/user_message")
-async def root(UserMessage: UserMessage, token: str = Depends(get_current_user)):
-    conversation_history = []
-    user_id = str(token["sub"])
-    if str(UserMessage.content) == "":
-        raise HTTPException(status_code=400, detail="message is required")
-    if UserMessage.role != "user":
-        raise HTTPException(status_code=400, detail="user role only")
+async def root(UserMessage: UserMessage): #, token: str = Depends(get_current_user)):
+    # conversation_history = []
+    # user_id = str(token["sub"])
+    # if str(UserMessage.content) == "":
+    #     raise HTTPException(status_code=400, detail="message is required")
+    # if UserMessage.role != "user":
+    #     raise HTTPException(status_code=400, detail="user role only")
 
-    check_user = User.find_one({"_id": ObjectId(user_id)})
+    # check_user = User.find_one({"_id": ObjectId(user_id)})
 
-    if not check_user:
-        raise HTTPException(status_code=404, detail="User not found")
+    # if not check_user:
+    #     raise HTTPException(status_code=404, detail="User not found")
 
-    text = generate_message(str(UserMessage.content))
-    conversation_history.append({"role": "user", "content": UserMessage.content})
-    conversation_history.append({"role": "assistant", "content": text})
+    text = generate_message(str(UserMessage.content),UserMessage.voice)
+    # conversation_history.append({"role": "user", "content": UserMessage.content})
+    # conversation_history.append({"role": "assistant", "content": text})
 
-    check_user_id_in_user_message = User_Message.find_one({"_id": ObjectId(user_id)})
-    if not check_user_id_in_user_message:
-        User_Message.insert_one(
-            {
-                "_id": ObjectId(user_id),
-                "history_message": conversation_history,
-            }
-        )
-    else:
-        User_Message.update_one(
-            {"_id": ObjectId(user_id)},
-            {"$push": {"history_message": {"$each": conversation_history}}},
-            upsert=True,
-        )
+    # check_user_id_in_user_message = User_Message.find_one({"_id": ObjectId(user_id)})
+    # if not check_user_id_in_user_message:
+    #     User_Message.insert_one(
+    #         {
+    #             "_id": ObjectId(user_id),
+    #             "history_message": conversation_history,
+    #         }
+    #     )
+    # else:
+    #     User_Message.update_one(
+    #         {"_id": ObjectId(user_id)},
+    #         {"$push": {"history_message": {"$each": conversation_history}}},
+    #         upsert=True,
+    #     )
     return {"role": "assistant", "content": text}
 
 
