@@ -25,6 +25,7 @@ assistant_content_men = file_assistant_men.read_text(encoding="utf-8")
 
 
 def generate_message(prompt, voice):
+    print("voice", voice)
     if voice == "women":
         response = openai.ChatCompletion.create(
             engine=os.getenv("ENGINE"),
@@ -40,6 +41,10 @@ def generate_message(prompt, voice):
             presence_penalty=0,
             stop=None,
         )
+        data = response["choices"][0]["message"]["content"]
+        print("หญิง", data)
+        data = data.replace("ครับ", "ค่ะ")
+        print("หญิง", data)
     else:
         response = openai.ChatCompletion.create(
             engine=os.getenv("ENGINE"),
@@ -55,5 +60,9 @@ def generate_message(prompt, voice):
             presence_penalty=0,
             stop=None,
         )
-    data = response["choices"][0]["message"]["content"]
+        data = response["choices"][0]["message"]["content"]
+        print("ชาย", data)
+        data = data.replace("ค่ะ", "ครับ")
+        data = data.replace("คะ", "ครับ")
+        print("ชาย", data)
     return data

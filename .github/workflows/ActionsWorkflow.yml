@@ -13,9 +13,13 @@ jobs:
     runs-on:
       - self-hosted
     steps:
-      - name: Stop all docker-compose
+      - name: Stop docker-compose backend_api
         run: cd /home/narisara/project/VirtualAssistant_Backend &&
-          docker-compose stop && docker-compose rm -f
+          docker-compose stop backend_api && docker-compose rm backend_api
+
+      - name: Stop docker-compose frontend_web
+        run: cd /home/narisara/project/VirtualAssistant_Backend &&
+          docker-compose stop frontend_web && docker-compose rm frontend_web
 
       - name: Git pull backend
         run: cd /home/narisara/project/VirtualAssistant_Backend && git checkout . && git pull https://$USER_GITHUB:$PASSWORD_GITHUB@github.com/CP23NW1/VirtualAssistant_Backend
