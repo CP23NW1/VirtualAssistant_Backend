@@ -45,9 +45,18 @@ services:
       - my_network
     volumes:
       - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
+
+
+  reverse-proxy:
+    image: nginx:alpine
+    container_name: nginx-reverse-proxy
+    volumes:
+      - /my-app.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+  
 volumes:
   mongo:
-  
 networks:
   my_network:
     driver: bridge
