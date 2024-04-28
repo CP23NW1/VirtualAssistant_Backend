@@ -13,6 +13,10 @@ jobs:
     runs-on:
       - self-hosted
     steps:
+      - name: Stop docker-compose reverse-proxy
+        run: cd /home/narisara/project/VirtualAssistant_Backend &&
+          docker-compose stop reverse-proxy && docker-compose rm reverse-proxy
+
       - name: Stop docker-compose backend_api
         run: cd /home/narisara/project/VirtualAssistant_Backend &&
           docker-compose stop backend_api && docker-compose rm backend_api
@@ -39,3 +43,6 @@ jobs:
 
       - name: Docker-compose up frontend_web
         run: cd /home/narisara/project/VirtualAssistant_Backend && docker-compose up --build -d frontend_web
+
+      - name: Docker-compose up reverse-proxy
+        run: cd /home/narisara/project/VirtualAssistant_Backend && docker-compose up --build -d reverse-proxy

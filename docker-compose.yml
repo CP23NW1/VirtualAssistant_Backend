@@ -51,7 +51,7 @@ services:
     image: nginx:alpine
     container_name: nginx-reverse-proxy
     volumes:
-      - /my-app.conf:/etc/nginx/nginx.conf
+      - ./my-app.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
   
